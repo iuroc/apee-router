@@ -25,6 +25,7 @@ class ApeeRouter {
         for (let i = 0; i < routeNames.length; i++) {
             const routeName = routeNames[i]
             const dom = this.getDom(routeName)
+            // DOM 不存在，跳过该条路由设置
             if (!dom) continue
             if (!this.routeList[routeName])
                 this.routeList[routeName] = {
@@ -79,15 +80,26 @@ class ApeeRouter {
         let newHash = event ? new URL(event.newURL).hash : location.hash
         let routeName = newHash.split('/')[1]
         let args = newHash.split('/').slice(2)
-        if (!newHash) routeName = this.default
         const route = _this.routeList[routeName]
-        // 路由匹配错误，跳转主页
+        if (!newHash) {
+            const defaultDom = this.getDom(_this.default)
+            if (route) {
+                routeName = _this.default
+            } else if (defaultDom) {
+                _this.changeView(defaultDom)
+            } else return
+        }
         if (!route) return location.hash = ''
-        this.hideAllRouteDom()
-        route.dom.style.display = 'revert'
+        // 路由匹配错误，跳转主页
+        route.args = args
         route.event.forEach(event => {
             event(route)
         })
+        _this.changeView(route.dom)
+    }
+    changeView(dom: HTMLElement) {
+        this.hideAllRouteDom()
+        dom.style.display = 'revert'
     }
     hideAllRouteDom() {
         const doms = document.querySelectorAll<HTMLElement>('[data-route]')

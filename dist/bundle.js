@@ -10,9 +10,9 @@ var ApeeRouter = /** @class */ (function () {
     function ApeeRouter(options) {
         var _this_1 = this;
         this.routeList = {};
-        this.default = options.default || 'home';
+        this.default = (options === null || options === void 0 ? void 0 : options.default) || 'home';
         /** 注册路由名称列表 */
-        var routeNames = options.routes || [];
+        var routeNames = (options === null || options === void 0 ? void 0 : options.routes) || [];
         routeNames.forEach(function (routeName) { return _this_1.set(routeName); });
     }
     /**
@@ -26,6 +26,7 @@ var ApeeRouter = /** @class */ (function () {
         for (var i = 0; i < routeNames.length; i++) {
             var routeName = routeNames[i];
             var dom = this.getDom(routeName);
+            // DOM 不存在，跳过该条路由设置
             if (!dom)
                 continue;
             if (!this.routeList[routeName])
@@ -85,17 +86,30 @@ var ApeeRouter = /** @class */ (function () {
         var newHash = event ? new URL(event.newURL).hash : location.hash;
         var routeName = newHash.split('/')[1];
         var args = newHash.split('/').slice(2);
-        if (!newHash)
-            routeName = this.default;
         var route = _this.routeList[routeName];
-        // 路由匹配错误，跳转主页
+        if (!newHash) {
+            var defaultDom = this.getDom(_this.default);
+            if (route) {
+                routeName = _this.default;
+            }
+            else if (defaultDom) {
+                _this.changeView(defaultDom);
+            }
+            else
+                return;
+        }
         if (!route)
             return location.hash = '';
-        this.hideAllRouteDom();
-        route.dom.style.display = 'revert';
+        // 路由匹配错误，跳转主页
+        route.args = args;
         route.event.forEach(function (event) {
             event(route);
         });
+        _this.changeView(route.dom);
+    };
+    ApeeRouter.prototype.changeView = function (dom) {
+        this.hideAllRouteDom();
+        dom.style.display = 'revert';
     };
     ApeeRouter.prototype.hideAllRouteDom = function () {
         var doms = document.querySelectorAll('[data-route]');
@@ -109,9 +123,8 @@ exports.default = ApeeRouter;
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var apee_router_1 = require("./apee-router");
-var apeeRouter = new apee_router_1.default({
-    routes: ['home', 'about'],
-});
+var apeeRouter = new apee_router_1.default();
+apeeRouter.set(['about']);
 apeeRouter.start();
 console.log(apeeRouter);
 
