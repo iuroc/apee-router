@@ -40,9 +40,6 @@ class ApeeRouter {
             if (typeof event == 'function')
                 route.event.push(event)
         }
-        routeNames.forEach(routeName => {
-
-        })
     }
     /**
      * 获取路由目标 DOM
@@ -67,35 +64,30 @@ class ApeeRouter {
     }
     /** 启动路由系统 */
     start() {
+        const _this = this
         window.addEventListener('hashchange', (event) => {
-            this.loadRoute(this.getNowRoute(event))
+            this.loadRoute(_this, event)
         })
-        this.loadRoute(this.getNowRoute())
-    }
-    getNowRoute(event?: HashChangeEvent) {
-        let newHash = event ? new URL(event.newURL).hash : location.hash
-        let routeName = newHash.split('/')[1]
-        let args = newHash.split('/').slice(2)
-        if (!routeName) routeName = this.default
-        const route = this.routeList[routeName]
-        route.args = args
-        return route
+        this.loadRoute(_this)
     }
     /**
      * 载入路由
      * @param route 路由对象
      * @returns 
      */
-    loadRoute(route: Route) {
+    loadRoute(_this: this, event?: HashChangeEvent) {
+        let newHash = event ? new URL(event.newURL).hash : location.hash
+        let routeName = newHash.split('/')[1]
+        let args = newHash.split('/').slice(2)
+        if (!newHash) routeName = this.default
+        const route = _this.routeList[routeName]
         // 路由匹配错误，跳转主页
         if (!route) return location.hash = ''
         this.hideAllRouteDom()
-        if (route.dom) {
-            route.dom.style.display = 'revert'
-            route.event.forEach(event => {
-                event(route)
-            })
-        }
+        route.dom.style.display = 'revert'
+        route.event.forEach(event => {
+            event(route)
+        })
     }
     hideAllRouteDom() {
         const doms = document.querySelectorAll<HTMLElement>('[data-route]')
