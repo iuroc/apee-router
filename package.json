@@ -1,0 +1,24 @@
+{
+  "name": "apee-router",
+  "version": "1.0.0",
+  "description": "原生 JS 实现的路由管理系统",
+  "main": "js/apee-router.js",
+  "types": "src/apee-router.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oyps/apee-router.git"
+  },
+  "keywords": [
+    "router",
+    "js"
+  ],
+  "author": "欧阳鹏",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oyps/apee-router/issues"
+  },
+  "homepage": "https://github.com/oyps/apee-router#readme"
+}
