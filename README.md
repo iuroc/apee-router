@@ -56,6 +56,6 @@
 
 ### 启动路由
 
-    ```typescript
-    apeeRouter.start()
-    ```
+```typescript
+apeeRouter.start()
+```
