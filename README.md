@@ -29,7 +29,7 @@
 
     ```javascript
     const ApeeRouter = require('apee-router')
-    const apeeRouter = new ApeeRouter()
+    const apeeRouter = new ApeeRouter.default()
     ```
 - 使用 `<script>` 引入
 
