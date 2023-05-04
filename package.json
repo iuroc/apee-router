@@ -5,7 +5,7 @@
   "main": "js/main.js",
   "types": "src/main.ts",
   "scripts": {
-    "build": "tsc && "
+    "build": "node build.js"
   },
   "repository": {
     "type": "git",
