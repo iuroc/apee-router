@@ -5,7 +5,7 @@
   "main": "js/apee-router.js",
   "types": "src/apee-router.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && "
   },
   "repository": {
     "type": "git",
