@@ -8,11 +8,11 @@ class ApeeRouter {
     routeList: Record<string, Route>
     /** 默认路由名称 */
     default: string
-    constructor(options: InitOptions) {
+    constructor(options?: InitOptions) {
         this.routeList = {}
-        this.default = options.default || 'home'
+        this.default = options?.default || 'home'
         /** 注册路由名称列表 */
-        const routeNames = options.routes || []
+        const routeNames = options?.routes || []
         routeNames.forEach(routeName => this.set(routeName))
     }
     /**
