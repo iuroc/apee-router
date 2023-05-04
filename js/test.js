@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var apee_router_1 = require("./apee-router");
-var apeeRouter = new apee_router_1.default();
+import ApeeRouter from './apee-router';
+var apeeRouter = new ApeeRouter();
 apeeRouter.set(['about']);
 apeeRouter.start();
 console.log(apeeRouter);

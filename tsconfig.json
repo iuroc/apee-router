@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "strict": true,
-        "outDir": "js"
+        "outDir": "js",
+        "module": "ES6"
     }
 }
