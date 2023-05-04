@@ -5,9 +5,9 @@
  */
 class ApeeRouter {
     /** 路由对象集合 */
-    routeList: Record<string, Route>
+    private routeList: Record<string, Route>
     /** 默认路由名称 */
-    default: string
+    private default: string
     constructor(options?: InitOptions) {
         this.routeList = {}
         this.default = options?.default || 'home'
@@ -47,7 +47,7 @@ class ApeeRouter {
      * @param routeName 路由名称
      * @returns 路由目标 DOM
      */
-    getDom(routeName: string) {
+    private getDom(routeName: string) {
         return document.querySelector<HTMLElement>(`[data-route="${routeName}"]`)
     }
     /**
@@ -55,7 +55,7 @@ class ApeeRouter {
      * @param routeName 路由名称
      * @returns 路由对象
      */
-    initRoute(routeName: string): Route {
+    private initRoute(routeName: string): Route {
         const route = this.routeList[routeName]
         route.name = routeName
         if (!route.event) route.event = []
@@ -76,7 +76,7 @@ class ApeeRouter {
      * @param route 路由对象
      * @returns 
      */
-    loadRoute(_this: this, event?: HashChangeEvent) {
+    private loadRoute(_this: this, event?: HashChangeEvent) {
         let newHash = event ? new URL(event.newURL).hash : location.hash
         let routeName = newHash.split('/')[1]
         let args = newHash.split('/').slice(2)
@@ -97,18 +97,18 @@ class ApeeRouter {
         })
         _this.changeView(route.dom)
     }
-    changeView(dom: HTMLElement) {
+    private changeView(dom: HTMLElement) {
         this.hideAllRouteDom()
         dom.style.display = 'revert'
     }
-    hideAllRouteDom() {
+    private hideAllRouteDom() {
         const doms = document.querySelectorAll<HTMLElement>('[data-route]')
         doms.forEach(dom => dom.style.display = 'none')
     }
 }
 
 /** 配置选项 */
-type InitOptions = {
+export type InitOptions = {
     /** 注册路由名称列表 */
     routes?: string[],
     /** 默认路由名称 */
@@ -116,7 +116,7 @@ type InitOptions = {
 }
 
 /** 路由对象 */
-type Route = {
+export type Route = {
     /** 路由名称 */
     name: string
     /** 路由数据存储区 */
@@ -130,7 +130,7 @@ type Route = {
     args: string[]
 }
 /** 路由事件 */
-type RouteEvent = (route: Route) => void
+export type RouteEvent = (route: Route) => void
 
 
 export default ApeeRouter

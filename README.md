@@ -14,7 +14,7 @@
 - 通过 `<script>` 引入
 
     ```html
-    <script src="apee-router.js"></script>
+    <script src="/dist/apee-router.js"></script>
     ```
 
 ### 2. 实例化 ApeeRouter 类
@@ -49,9 +49,13 @@
 - 方法 2：使用 `set` 方法设置
 
     ```typescript
-    const apeeRouter = new ApeeRouter()
     apeeRouter.set('home')
-    apeeRouter.set('home', (route: Route))
-    apeeRouter.set(['about', 'list'])
+    apeeRouter.set('home', (route: Route) => {})
+    apeeRouter.set(['about', 'list'], (route: Route) => {})
+    ```
 
+### 启动路由
+
+    ```typescript
+    apeeRouter.start()
     ```
