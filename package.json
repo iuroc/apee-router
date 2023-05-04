@@ -1,6 +1,6 @@
 {
   "name": "apee-router",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "原生 JS 实现的路由管理系统",
   "main": "js/main.js",
   "types": "src/main.ts",

@@ -37,7 +37,7 @@
     const apeeRouter = new ApeeRouter()
     ```
 
-### 注册路由
+### 3. 注册路由
 
 - 方法 1：在构造函数中设置
 
@@ -54,7 +54,7 @@
     apeeRouter.set(['about', 'list'], (route: Route) => {})
     ```
 
-### 启动路由
+### 4. 启动路由
 
 ```typescript
 apeeRouter.start()
