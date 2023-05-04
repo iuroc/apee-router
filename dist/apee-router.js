@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Apee 路由管理系统
  * @author 欧阳鹏
@@ -115,3 +116,4 @@ var ApeeRouter = /** @class */ (function () {
     };
     return ApeeRouter;
 }());
+
