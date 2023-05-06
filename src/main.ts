@@ -95,7 +95,8 @@ class ApeeRouter {
         if (exclude && routeName) selector = `[data-route]:not([data-route="${routeName}"]`
         else selector = routeName ? `[data-route="${routeName}"]` : '[data-route]'
         const result = document.querySelectorAll<HTMLElement>(selector)
-        if (result.length == 0) throw new Error(`${selector} 元素不存在`)
+        if (routeName && !exclude && result.length == 0)
+            throw new Error(`${selector} 元素不存在`)
         return routeName && !exclude ? result[0] : result
     }
     /**
