@@ -209,6 +209,19 @@ type Route = {
 }
 ```
 
+## 开发环境
+
+- 打包项目
+
+    ```bash
+    npm run build
+    ```
+- 测试环境
+
+    ```bash
+    npm run test
+    ```
+
 ## 关于项目
 
 - 作者：欧阳鹏
