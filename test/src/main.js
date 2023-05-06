@@ -7,14 +7,16 @@ var ApeeRouter = /** @class */ (function () {
     function ApeeRouter(options) {
         /** 路由列表 */
         this.routeList = {};
-        this.defaultRoute = this.setDefaultRoute((options === null || options === void 0 ? void 0 : options.default) || 'home');
+        if (options === null || options === void 0 ? void 0 : options.default)
+            this.setDefaultRoute(options.default);
     }
     ApeeRouter.prototype.setDefaultRoute = function (_default) {
         if (typeof _default == 'string')
-            return this.set(_default);
-        if (Array.isArray(_default))
-            return this.set.apply(this, _default);
-        throw new Error('default 选项只能是 string | string[] 类型');
+            this.defaultRoute = this.set(_default)[0];
+        else if (Array.isArray(_default))
+            this.defaultRoute = this.set.apply(this, _default)[0];
+        else
+            throw new Error('default 选项只能是 string | string[] 类型');
     };
     ApeeRouter.prototype.set = function (routeName, routeEvent) {
         var _a;
@@ -25,8 +27,11 @@ var ApeeRouter = /** @class */ (function () {
             var routeEvents = routeEvent ? Array.isArray(routeEvent) ? routeEvent : [routeEvent] : [];
             var route = this.routeList[routeName_1];
             // 路由已经存在，追加路由事件列表
-            if (route)
-                return (_a = route.event).push.apply(_a, routeEvents), route;
+            if (route) {
+                (_a = route.event).push.apply(_a, routeEvents);
+                routes.push(route);
+                continue;
+            }
             // 路由不存在，开始创建新路由
             var dom = this.getRouteDom(routeName_1);
             // 路由对应的 DOM 不存在
@@ -45,10 +50,43 @@ var ApeeRouter = /** @class */ (function () {
         }
         return routes;
     };
-    ApeeRouter.prototype.getRouteDom = function (routeName) {
-        return document.querySelector("[data-route=\"".concat(routeName, "\"]"));
+    ApeeRouter.prototype.getRouteDom = function (routeName, exclude) {
+        if (exclude === void 0) { exclude = false; }
+        var selector;
+        if (exclude && routeName)
+            selector = "[data-route]:not([data-route=\"".concat(routeName, "\"]");
+        else
+            selector = routeName ? "[data-route=\"".concat(routeName, "\"]") : '[data-route]';
+        var result = document.querySelectorAll(selector);
+        return routeName && !exclude ? result[0] : result;
+    };
+    ApeeRouter.prototype.loadRoute = function (route, args) {
+        this.getRouteDom(route.name, true).forEach(function (dom) {
+            dom.style.display = 'none';
+        });
+        this.getRouteDom(route.name).style.display = 'block';
+        route.args = args;
+        route.event.forEach(function (event) { return event(route); });
+    };
+    ApeeRouter.prototype.start = function () {
+        var _this = this;
+        var listener = function (event) {
+            var newUrl = (event === null || event === void 0 ? void 0 : event.newURL) || location.href;
+            var newHash = new URL(newUrl).hash;
+            var args = newHash.split('/').slice(2);
+            if (newHash == '')
+                return _this.loadRoute(_this.defaultRoute, args);
+            var routeName = newHash.split('/')[1];
+            var route = _this.routeList[routeName];
+            if (!route)
+                return location.hash = '';
+            _this.loadRoute(route, args);
+        };
+        if (!this.defaultRoute)
+            this.setDefaultRoute('home');
+        window.addEventListener('hashchange', listener);
+        listener();
     };
     return ApeeRouter;
 }());
 exports.default = ApeeRouter;
-new ApeeRouter();
