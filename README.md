@@ -223,3 +223,15 @@ type Route = {
 - 公众号：代码十级（微信搜索，点点关注哦）
 - 博客：https://apee.top
 - 开发日期：2023 年 5 月 7 日
+
+## 源代码解析
+
+这是一个 TypeScript 编写的 APEE 路由管理模块，可以帮助开发者在单页面应用中管理路由。具体实现功能包括：设置默认路由、设置路由、载入路由、获取路由 DOM 元素等。
+
+类 `ApeeRouter` 实例化时，可以接受一个配置选项 `options`，其中 `options.default` 表示默认路由选项，`options.routeSet` 表示路由列表选项。类 `ApeeRouter` 的构造函数可以根据选项设置默认路由和路由列表。
+
+路由列表使用一个 `Record` 类型变量 `routeList` 进行存储，路由的 key 值是字符串类型，值为一个 `Route` 类型的对象。`Route` 类型包含 `name`、`event`、`dom`、`data`、`args`、`status` 等属性。`name` 表示路由名称，`event` 表示路由事件，`dom` 表示路由对应的 DOM 元素，`data` 表示路由数据，`args` 表示路由参数，`status` 表示路由状态。
+
+类 `ApeeRouter` 中提供了 `setDefaultRoute`、`set`、`getRouteDom`、`loadRoute` 和 `start` 等方法。`setDefaultRoute` 方法用于设置默认路由，参数 `_default` 可以是字符串或字符串数组类型。`set` 方法用于设置路由，参数 `routeName` 可以是字符串或字符串数组类型，参数 `routeEvent` 可以是 `RouteEventSetOption` 或 `RouteEventSetOption` 数组类型。`getRouteDom` 方法用于获取路由 DOM 元素，可以根据是否排除某个路由 DOM 元素来传入不同的参数。`loadRoute` 方法用于载入路由，参数 `route` 为 `Route` 类型的路由对象，参数 `args` 为路由参数。`start` 方法用于启动路由系统，会根据 URL 地址中的 `hash` 值来载入对应的路由。
+
+此外，代码中使用了一些类型定义，如 `InitOption`、`RouteSetOption`、`DefaultRouteOption`、`RouteNameSetOption`、`RouteEventSetOption` 等。其中，`InitOption` 类型表示实例化 `ApeeRouter` 类时传入的配置选项类型，`RouteSetOption` 类型表示设置路由列表时传入的路由选项类型，`DefaultRouteOption` 类型表示设置默认路由时传入的选项类型，`RouteNameSetOption` 类型表示设置路由时传入的路由名称类型，`RouteEventSetOption` 类型表示设置路由时传入的路由事件类型。
