@@ -17,10 +17,6 @@ class ApeeRouter {
     private setRouteOption(routeSet: RouteSetOption[]) {
         if (!Array.isArray(routeSet)) throw new Error('routeSet 类型错误')
         routeSet.forEach(set => {
-            // string
-            // [string]
-            // [string, event]
-            // [[string, string], [event, event]]
             if (typeof set == 'string') this.set(set)
             else if (Array.isArray(set)) {
                 if (set.length == 2 && typeof set[1] != 'string')

@@ -1,21 +1,8 @@
 import ApeeRouter from '../src/main'
 
-const router = new ApeeRouter({
-    routeSet: [
-        'list',
-        ['about', (route) => {
-            console.log(route)
-        }],
-        [['share', 'video'], [() => {
-            console.log(6666)
-        }, () => {
-            console.log(6666)
-        }]]
-    ]
-})
+const router = new ApeeRouter()
+router.set(['home', 'list', 'about', 'video', 'share'])
 router.start()
+
 window['router'] = router
-// string
-// [string]
-// [string, event]
-// [[string, string], [event, event]]
+window['ApeeRouter'] = ApeeRouter

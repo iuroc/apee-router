@@ -21,10 +21,6 @@ var ApeeRouter = /** @class */ (function () {
         if (!Array.isArray(routeSet))
             throw new Error('routeSet 类型错误');
         routeSet.forEach(function (set) {
-            // string
-            // [string]
-            // [string, event]
-            // [[string, string], [event, event]]
             if (typeof set == 'string')
                 _this_1.set(set);
             else if (Array.isArray(set)) {
