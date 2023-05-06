@@ -1,5 +1,7 @@
 /**
  * APEE 路由管理模块
+ * @author 欧阳鹏
+ * @link https://github.com/oyps/apee-router
  */
 class ApeeRouter {
     /** 默认路由 */
