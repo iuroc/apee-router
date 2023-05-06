@@ -1,119 +1,70 @@
 /**
- * Apee 路由管理系统
- * @author 欧阳鹏
- * @link https://github.com/oyps/apee-router
+ * APEE 路由管理模块
  */
 class ApeeRouter {
-    /** 路由对象集合 */
-    private routeList: Record<string, Route>
-    /** 默认路由名称 */
-    private default: string
-    constructor(options?: InitOptions) {
-        this.routeList = {}
-        this.default = options?.default || 'home'
-        /** 注册路由名称列表 */
-        const routeNames = options?.routes || []
-        routeNames.forEach(routeName => this.set(routeName))
+    defaultRoute: Route
+    /** 路由列表 */
+    routeList: Record<string, Route> = {}
+    constructor(options?: InitOption) {
+        this.defaultRoute = this.setDefaultRoute(options?.default || 'home')
     }
-    /**
-     * 注册路由
-     * @param routeName 路由名称
-     * @param event 路由事件，多次设置可执行多个事件
-     */
-    set(routeNames: string | string[], event?: RouteEvent) {
-        if (typeof routeNames == 'string') routeNames = [routeNames]
+    setDefaultRoute(_default: DefaultRouteOption) {
+        if (typeof _default == 'string')
+            return this.set(_default)
+        if (Array.isArray(_default))
+            return this.set(..._default)
+        throw new Error('default 选项只能是 string | string[] 类型')
+    }
+    set(routeName: string, routeEvent?: RouteEventSetOption): Route
+    set(routeName: string[], routeEvent?: RouteEventSetOption): Route[]
+    set(routeName: RouteNameSetOption, routeEvent?: RouteEventSetOption) {
+        const routeNames = Array.isArray(routeName) ? routeName : [routeName]
+        const routes: Route[] = []
         for (let i = 0; i < routeNames.length; i++) {
             const routeName = routeNames[i]
-            const dom = this.getDom(routeName)
-            // DOM 不存在，跳过该条路由设置
-            if (!dom) continue
-            if (!this.routeList[routeName])
-                this.routeList[routeName] = {
-                    data: {},
-                    event: [],
-                    args: [],
-                    name: routeName,
-                    status: 0,
-                    dom: dom
-                }
+            const routeEvents = routeEvent ? Array.isArray(routeEvent) ? routeEvent : [routeEvent] : []
             const route = this.routeList[routeName]
-            route.name = routeName
-            if (typeof event == 'function')
-                route.event.push(event)
+            // 路由已经存在，追加路由事件列表
+            if (route) return route.event.push(...routeEvents), route
+            // 路由不存在，开始创建新路由
+            const dom = this.getRouteDom(routeName)
+            
+            // 路由对应的 DOM 不存在
+            if (!dom) throw new Error(`data-route="${routeName}" 的 HTML 元素没有找到`)
+            // 创建新路由
+            const newRoute = this.routeList[routeName] = {
+                name: routeName,
+                event: routeEvents,
+                dom: dom,
+                data: {},
+                args: [],
+                status: 0
+            }
+            routes.push(newRoute)
         }
+        return routes
     }
-    /**
-     * 获取路由目标 DOM
-     * @param routeName 路由名称
-     * @returns 路由目标 DOM
-     */
-    private getDom(routeName: string) {
+    getRouteDom(routeName: string) {
         return document.querySelector<HTMLElement>(`[data-route="${routeName}"]`)
-    }
-    /**
-     * 初始化路由
-     * @param routeName 路由名称
-     * @returns 路由对象
-     */
-    private initRoute(routeName: string): Route {
-        const route = this.routeList[routeName]
-        route.name = routeName
-        if (!route.event) route.event = []
-        if (!route.data) route.data = {}
-        if (!route.status) route.event = []
-        return route
-    }
-    /** 启动路由系统 */
-    start() {
-        const _this = this
-        window.addEventListener('hashchange', (event) => {
-            this.loadRoute(_this, event)
-        })
-        this.loadRoute(_this)
-    }
-    /**
-     * 载入路由
-     * @param route 路由对象
-     * @returns 
-     */
-    private loadRoute(_this: this, event?: HashChangeEvent) {
-        let newHash = event ? new URL(event.newURL).hash : location.hash
-        let routeName = newHash.split('/')[1]
-        let args = newHash.split('/').slice(2)
-        const route = _this.routeList[routeName]
-        if (!newHash) {
-            const defaultDom = this.getDom(_this.default)
-            if (route) {
-                routeName = _this.default
-            } else if (defaultDom) {
-                _this.changeView(defaultDom)
-            } else return
-        }
-        if (!route) return location.hash = ''
-        // 路由匹配错误，跳转主页
-        route.args = args
-        route.event.forEach(event => {
-            event(route)
-        })
-        _this.changeView(route.dom)
-    }
-    private changeView(dom: HTMLElement) {
-        this.hideAllRouteDom()
-        dom.style.display = 'revert'
-    }
-    private hideAllRouteDom() {
-        const doms = document.querySelectorAll<HTMLElement>('[data-route]')
-        doms.forEach(dom => dom.style.display = 'none')
     }
 }
 
-/** 配置选项 */
-export type InitOptions = {
-    /** 注册路由名称列表 */
-    routes?: string[],
-    /** 默认路由名称 */
-    default?: string
+/** 初始化选项 */
+type InitOption = {
+    default: DefaultRouteOption
 }
+
+/** 默认路由选项 */
+type DefaultRouteOption = string | [string, RouteEvent | RouteEvent[]]
+
+/** 路由名称设置选项 */
+type RouteNameSetOption = string | string[]
+/** 路由事件设置选项 */
+type RouteEventSetOption = RouteEvent | RouteEvent[]
+/** 路由设置选项 */
+type RouteSetOption = RouteNameSetOption | [RouteNameSetOption, RouteEventSetOption]
+/** 路由事件 */
+export type RouteEvent = (route: Route) => void
 
 /** 路由对象 */
 export type Route = {
@@ -127,10 +78,11 @@ export type Route = {
     event: RouteEvent[],
     /** 路由目标 DOM */
     dom: HTMLElement,
+    /** 路由参数 */
     args: string[]
 }
-/** 路由事件 */
-export type RouteEvent = (route: Route) => void
-
 
 export default ApeeRouter
+
+
+new ApeeRouter()

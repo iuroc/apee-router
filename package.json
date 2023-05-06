@@ -5,7 +5,8 @@
   "main": "js/main.js",
   "types": "src/main.ts",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "test": "tsc test/test.ts --outDir test && browserify test/test/test.js -o test/bundle.js"
   },
   "repository": {
     "type": "git",
