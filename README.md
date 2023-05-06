@@ -1,6 +1,6 @@
 # Apee-Router
 
-ApeeRouter 是一个简单且轻量级的 JavaScript 路由库，允许开发人员轻松处理他们的 Web 应用程序中的路由。
+Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发人员轻松处理他们的 Web 应用程序中的路由。
 
 它提供了一种定义路由、设置默认路由和根据 URL 更改加载路由的方式。
 
