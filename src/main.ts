@@ -10,7 +10,7 @@ class ApeeRouter {
      * 实例化路由管理模块
      * @param options 配置选项
      */
-    constructor(options?: InitOption) {
+    public constructor(options?: InitOption) {
         if (options?.default) this.setDefaultRoute(options.default)
         if (options?.routeSet) this.setRouteOption(options.routeSet)
     }
@@ -27,6 +27,11 @@ class ApeeRouter {
             }
         })
     }
+
+    /**
+     * 设置默认路由
+     * @param _default 默认路由选项
+     */
     public setDefaultRoute(_default: DefaultRouteOption) {
         if (typeof _default == 'string')
             this.defaultRoute = this.set(_default)[0]
@@ -34,7 +39,11 @@ class ApeeRouter {
             this.defaultRoute = this.set(..._default)[0]
         else throw new Error('default 选项只能是 string | string[] 类型')
     }
-    public set(routeName: string | string[], routeEvent?: RouteEventSetOption): Route[]
+    /**
+     * 设置路由
+     * @param routeName 路由名称，可通过数组传入多个
+     * @param routeEvent 路由事件，可通过数组传入多个
+     */
     public set(routeName: RouteNameSetOption, routeEvent?: RouteEventSetOption) {
         const routeNames = Array.isArray(routeName) ? routeName : [routeName]
         const routes: Route[] = []

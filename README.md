@@ -8,19 +8,6 @@
 
 该类库易于使用，可用于各种前端项目中，为前端开发者提供了更加便捷和高效的路由管理方案。
 
-## 核心概念
-
-1. 路由设置选项
-
-    【路由设置选项】由【路由名称设置选项】和【路由事件设置选项】组成。
-
-    在设置路由时，需要填写【路由设置选项】。
-
-    基本语法为：
-
-    ```
-    路由名称设置选项[, 路由事件设置选项]
-    ```
 
 ## 使用方法
 
@@ -59,48 +46,165 @@
     const router = new ApeeRouter()
     ```
 
-    实例化时，可以传入配置选项。
+4. 设置路由
 
-    ```ts
-    const router = new ApeeRouter({
-        default: 'main',
-        routeSet: []
-    })
-    ```
-
-    配置选项说明：
-
-    - `default`：默认路由，示例：
+    - 通过 `ApeeRouter` 类的构造函数设置路由
 
         ```ts
+        new ApeeRouter({
+            /** 可选，默认路由 */
+            default: 'home',
+            /** 可选，注册路由列表 */
+            routeSet: ['about', ['list', (route) => {
+
+            }], 'share']
+        })
+        ```
+    - 通过 `set` 方法设置路由
+
+        ```ts
+        const router = new ApeeRouter()
         const routeEvent = (route) => {
-            console.log(route)
+            console.log(route.name)
         }
 
-        // 设置路由名称
-        default: 'main'
-
-        // 设置路由事件
-        default: ['main', routeEvent]
-
-        // 设置多个事件
-        default: ['main', [routeEvent, routeEvent, ...]]
+        // 单个路由 + 单个路由事件
+        router.set('home', routeEvent)
+        // 单个路由 + 单个路由事件
+        router.set('home', [routeEvent, routeEvent])
+        // 多个路由 + 单个路由事件
+        router.set(['home', 'about'], routeEvent)
+        // 多个路由 + 多个路由事件
+        router.set(['home', 'about'], [routeEvent, routeEvent])
         ```
+6. 启动路由
 
-    - `routeSet`：路由注册列表，是一个数组
+    ```ts
+    router.show()
+    ```
+7. 设置 CSS
 
-        ```ts
-        // 不设置事件
-        routeSet: ['main', 'list', ...]
+    ```css
+    [data-route] {
+        display: none;
+    }
+    ```
+8. 创建 HTML
 
-        // 设置事件
-        routeSet: ['main', ['list', routeEvent], 'about', ...]
-        
-        // 多个路由
-        routeSet: ['main', [['list', 'about', ...], routeEvent]]
-        ```
-4. 创建路由
-
+    ```html
+    <div data-route="home"></div>
+    <div data-route="list"></div>
+    <div data-route="share"></div>
+    <div data-route="about"></div>
     ```
 
+## API 文档
+
+- `constructor` 方法
+
+    ```ts
+    /**
+     * 实例化路由管理模块
+     * @param options 配置选项
+     */
+    public constructor(options?: InitOption): void
     ```
+- `set` 方法
+
+    ```ts
+    /**
+     * 设置路由
+     * @param routeName 路由名称，可通过数组传入多个
+     * @param routeEvent 路由事件，可通过数组传入多个
+     */
+    public set(routeName: RouteNameSetOption, routeEvent?: RouteEventSetOption): Route[]
+    ```
+- `setDefaultRoute` 方法
+
+    ```ts
+    /**
+     * 设置默认路由
+     * @param _default 默认路由选项
+     */
+    public setDefaultRoute(_default: DefaultRouteOption): void
+    ```
+- `getRouteDom` 方法
+
+    ```ts
+    /** 获取所有路由 DOM */
+    public getRouteDom(): NodeListOf<HTMLElement>
+    /**
+     * 获取某个路由 DOM
+     * @param routeName 路由名称
+     */
+    public getRouteDom(routeName: string): HTMLElement
+    /**
+     * 获取所有路由 DOM，并排除某个路由 DOM
+     * @param routeName 需要排除的路由名称
+     * @param exclude 是否开启该功能
+     */
+    public getRouteDom(routeName: string, exclude: boolean): NodeListOf<HTMLElement>
+    ```
+- `loadRoute` 方法
+
+    ```ts
+    /**
+     * 载入路由
+     * @param route 路由对象
+     * @param args 路由参数
+     */
+    public loadRoute(route: Route, args: string[]): void
+    ```
+
+- `start` 方法
+
+    ```ts
+    /** 启动路由系统 */
+    public start(): void
+    ```
+- `ApeeRouter.util` 工具类
+
+    ```ts
+    /** 工具类 */
+    public static util = {
+        /** 显示元素 */
+        show(dom?: HTMLElement | HTMLElement[]) {
+            if (!dom) return
+            const doms = dom instanceof Node ? [dom] : dom
+            doms.forEach(dom => dom.style.display = 'block')
+        },
+        /** 隐藏 DOM */
+        hide(dom?: HTMLElement | HTMLElement[]) {
+            if (!dom) return
+            const doms = dom instanceof Node ? [dom] : dom
+            doms.forEach(dom => dom.style.display = 'none')
+        },
+    }
+    ```
+
+## 类型定义
+
+```ts
+/** 路由名称设置选项 */
+type RouteNameSetOption = string | string[]
+/** 路由事件设置选项 */
+type RouteEventSetOption = RouteEvent | RouteEvent[]
+/** 路由设置选项 */
+type RouteSetOption = RouteNameSetOption | [RouteNameSetOption, RouteEventSetOption]
+/** 路由事件 */
+type RouteEvent = (route: Route) => void
+type Route = {
+    /** 路由名称 */
+    name: string
+    /** 路由数据存储区 */
+    data: Record<string, any>,
+    /** 路由就绪状态 */
+    status: number,
+    /** 路由事件列表 */
+    event: RouteEvent[],
+    /** 路由目标 DOM */
+    dom: HTMLElement,
+    /** 路由参数 */
+    args: string[]
+}
+```
