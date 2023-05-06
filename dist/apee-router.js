@@ -2,6 +2,8 @@
 
 /**
  * APEE 路由管理模块
+ * @author 欧阳鹏
+ * @link https://github.com/oyps/apee-router
  */
 var ApeeRouter = /** @class */ (function () {
     /**
@@ -13,7 +15,31 @@ var ApeeRouter = /** @class */ (function () {
         this.routeList = {};
         if (options === null || options === void 0 ? void 0 : options.default)
             this.setDefaultRoute(options.default);
+        if (options === null || options === void 0 ? void 0 : options.routeSet)
+            this.setRouteOption(options.routeSet);
     }
+    ApeeRouter.prototype.setRouteOption = function (routeSet) {
+        var _this_1 = this;
+        if (!Array.isArray(routeSet))
+            throw new Error('routeSet 类型错误');
+        routeSet.forEach(function (set) {
+            if (typeof set == 'string')
+                _this_1.set(set);
+            else if (Array.isArray(set)) {
+                if (set.length == 2 && typeof set[1] != 'string')
+                    _this_1.set.apply(_this_1, set);
+                else
+                    _this_1.set(set);
+            }
+            else {
+                throw new Error('routeSet 类型错误');
+            }
+        });
+    };
+    /**
+     * 设置默认路由
+     * @param _default 默认路由选项
+     */
     ApeeRouter.prototype.setDefaultRoute = function (_default) {
         if (typeof _default == 'string')
             this.defaultRoute = this.set(_default)[0];
@@ -22,6 +48,11 @@ var ApeeRouter = /** @class */ (function () {
         else
             throw new Error('default 选项只能是 string | string[] 类型');
     };
+    /**
+     * 设置路由
+     * @param routeName 路由名称，可通过数组传入多个
+     * @param routeEvent 路由事件，可通过数组传入多个
+     */
     ApeeRouter.prototype.set = function (routeName, routeEvent) {
         var _a;
         var routeNames = Array.isArray(routeName) ? routeName : [routeName];
