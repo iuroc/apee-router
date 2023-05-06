@@ -1,6 +1,6 @@
 # Apee-Router
 
-> 原生 JS 实现的路由管理系统
+> APEE 路由控制模块，原生 JS 实现
 
 ## 使用方法
 
@@ -14,7 +14,10 @@
 - 通过 `<script>` 引入
 
     ```html
+    <!-- 未压缩版本 -->
     <script src="/dist/apee-router.js"></script>
+    <!-- 压缩版本 -->
+    <script src="/dist/apee-router.min.js"></script>
     ```
 
 ### 2. 实例化 ApeeRouter 类

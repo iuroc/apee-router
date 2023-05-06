@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * APEE 路由管理模块
  */
 var ApeeRouter = /** @class */ (function () {
+    /**
+     * 实例化路由管理模块
+     * @param options 配置选项
+     */
     function ApeeRouter(options) {
         /** 路由列表 */
         this.routeList = {};
@@ -62,6 +66,11 @@ var ApeeRouter = /** @class */ (function () {
             throw new Error("".concat(selector, " \u5143\u7D20\u4E0D\u5B58\u5728"));
         return routeName && !exclude ? result[0] : result;
     };
+    /**
+     * 载入路由
+     * @param route 路由对象
+     * @param args 路由参数
+     */
     ApeeRouter.prototype.loadRoute = function (route, args) {
         this.getRouteDom(route.name, true).forEach(function (dom) {
             dom.style.display = 'none';
@@ -70,6 +79,7 @@ var ApeeRouter = /** @class */ (function () {
         route.args = args;
         route.event.forEach(function (event) { return event(route); });
     };
+    /** 启动路由系统 */
     ApeeRouter.prototype.start = function () {
         var _this = this;
         var listener = function (event) {
@@ -88,6 +98,23 @@ var ApeeRouter = /** @class */ (function () {
             this.setDefaultRoute('home');
         window.addEventListener('hashchange', listener);
         listener();
+    };
+    /** 工具类 */
+    ApeeRouter.util = {
+        /** 显示元素 */
+        show: function (dom) {
+            if (!dom)
+                return;
+            var doms = dom instanceof Node ? [dom] : dom;
+            doms.forEach(function (dom) { return dom.style.display = 'block'; });
+        },
+        /** 隐藏 DOM */
+        hide: function (dom) {
+            if (!dom)
+                return;
+            var doms = dom instanceof Node ? [dom] : dom;
+            doms.forEach(function (dom) { return dom.style.display = 'none'; });
+        },
     };
     return ApeeRouter;
 }());

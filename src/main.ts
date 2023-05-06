@@ -3,21 +3,43 @@
  */
 class ApeeRouter {
     /** 默认路由 */
-    defaultRoute?: Route
+    private defaultRoute?: Route
     /** 路由列表 */
-    routeList: Record<string, Route> = {}
+    private routeList: Record<string, Route> = {}
+    /**
+     * 实例化路由管理模块
+     * @param options 配置选项
+     */
     constructor(options?: InitOption) {
         if (options?.default) this.setDefaultRoute(options.default)
+        if (options?.routeSet) this.setRouteOption(options.routeSet)
     }
-    setDefaultRoute(_default: DefaultRouteOption) {
+    private setRouteOption(routeSet: RouteSetOption[]) {
+        if (!Array.isArray(routeSet)) throw new Error('routeSet 类型错误')
+        routeSet.forEach(set => {
+            // string
+            // [string]
+            // [string, event]
+            // [[string, string], [event, event]]
+            if (typeof set == 'string') this.set(set)
+            else if (Array.isArray(set)) {
+                if (set.length == 2 && typeof set[1] != 'string')
+                    this.set(...set as [RouteNameSetOption, RouteEventSetOption])
+                else this.set(set as string[])
+            } else {
+                throw new Error('routeSet 类型错误')
+            }
+        })
+    }
+    public setDefaultRoute(_default: DefaultRouteOption) {
         if (typeof _default == 'string')
             this.defaultRoute = this.set(_default)[0]
         else if (Array.isArray(_default))
             this.defaultRoute = this.set(..._default)[0]
         else throw new Error('default 选项只能是 string | string[] 类型')
     }
-    set(routeName: string | string[], routeEvent?: RouteEventSetOption): Route[]
-    set(routeName: RouteNameSetOption, routeEvent?: RouteEventSetOption) {
+    public set(routeName: string | string[], routeEvent?: RouteEventSetOption): Route[]
+    public set(routeName: RouteNameSetOption, routeEvent?: RouteEventSetOption) {
         const routeNames = Array.isArray(routeName) ? routeName : [routeName]
         const routes: Route[] = []
         for (let i = 0; i < routeNames.length; i++) {
@@ -49,19 +71,19 @@ class ApeeRouter {
     }
 
     /** 获取所有路由 DOM */
-    getRouteDom(): NodeListOf<HTMLElement>
+    public getRouteDom(): NodeListOf<HTMLElement>
     /**
      * 获取某个路由 DOM
      * @param routeName 路由名称
      */
-    getRouteDom(routeName: string): HTMLElement
+    public getRouteDom(routeName: string): HTMLElement
     /**
      * 获取所有路由 DOM，并排除某个路由 DOM
      * @param routeName 需要排除的路由名称
      * @param exclude 是否开启该功能
      */
-    getRouteDom(routeName: string, exclude: boolean): NodeListOf<HTMLElement>
-    getRouteDom(routeName?: string, exclude: boolean = false) {
+    public getRouteDom(routeName: string, exclude: boolean): NodeListOf<HTMLElement>
+    public getRouteDom(routeName?: string, exclude: boolean = false) {
         let selector
         if (exclude && routeName) selector = `[data-route]:not([data-route="${routeName}"]`
         else selector = routeName ? `[data-route="${routeName}"]` : '[data-route]'
@@ -69,7 +91,12 @@ class ApeeRouter {
         if (result.length == 0) throw new Error(`${selector} 元素不存在`)
         return routeName && !exclude ? result[0] : result
     }
-    loadRoute(route: Route, args: string[]) {
+    /**
+     * 载入路由
+     * @param route 路由对象
+     * @param args 路由参数
+     */
+    public loadRoute(route: Route, args: string[]) {
         this.getRouteDom(route.name, true).forEach(dom => {
             dom.style.display = 'none'
         })
@@ -77,8 +104,8 @@ class ApeeRouter {
         route.args = args
         route.event.forEach(event => event(route))
     }
-
-    start() {
+    /** 启动路由系统 */
+    public start() {
         const _this = this
         const listener = (event?: HashChangeEvent) => {
             let newUrl = event?.newURL || location.href
@@ -94,11 +121,29 @@ class ApeeRouter {
         window.addEventListener('hashchange', listener)
         listener()
     }
+    /** 工具类 */
+    public static util = {
+        /** 显示元素 */
+        show(dom?: HTMLElement | HTMLElement[]) {
+            if (!dom) return
+            const doms = dom instanceof Node ? [dom] : dom
+            doms.forEach(dom => dom.style.display = 'block')
+        },
+        /** 隐藏 DOM */
+        hide(dom?: HTMLElement | HTMLElement[]) {
+            if (!dom) return
+            const doms = dom instanceof Node ? [dom] : dom
+            doms.forEach(dom => dom.style.display = 'none')
+        },
+    }
 }
 
 /** 初始化选项 */
 type InitOption = {
-    default?: DefaultRouteOption
+    /** 默认路由设置选项 */
+    default?: DefaultRouteOption,
+    /** 路由注册选项 */
+    routeSet?: RouteSetOption[]
 }
 
 /** 默认路由选项 */
