@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apee Router</title>
+    <script src="https://cdn.jsdelivr.net/npm/apee-router@1.1.4/dist/apee-router.min.js"></script>
+</head>
+
+<body>
+    
+    <div data-route="home">
+        <h1>主页</h1>
+        <a href="#/about">点击跳转到 #/about</a>
+    </div>
+    <div data-route="about">
+        <h1>关于</h1>
+        <a href="#/home">点击跳转到 #/home</a>
+    </div>
+    <script>
+        const router = new ApeeRouter()
+        router.set('about')
+        router.start()
+    </script>
+</body>
+
+</html>
