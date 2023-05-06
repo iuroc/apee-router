@@ -93,6 +93,16 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
     <div data-route="about"></div>
     ```
 
+    您也可以在 VSCode 中新建 HTML 代码片段，输入 apr 即可快捷插入路由 DOM。
+
+    ```json
+    "ApeeRouter": {
+		"prefix": "apee-router",
+		"body": "<div data-route=\"$1\">\n    $2\n</div>\n",
+		"description": "插入一个 ApeeRouter 路由 DOM"
+	},
+    ```
+
 ## API 文档
 
 - `constructor` 方法
