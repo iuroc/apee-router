@@ -58,6 +58,8 @@ var ApeeRouter = /** @class */ (function () {
         else
             selector = routeName ? "[data-route=\"".concat(routeName, "\"]") : '[data-route]';
         var result = document.querySelectorAll(selector);
+        if (result.length == 0)
+            throw new Error("".concat(selector, " \u5143\u7D20\u4E0D\u5B58\u5728"));
         return routeName && !exclude ? result[0] : result;
     };
     ApeeRouter.prototype.loadRoute = function (route, args) {
