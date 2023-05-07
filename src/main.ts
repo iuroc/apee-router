@@ -8,6 +8,8 @@ class ApeeRouter {
     private defaultRoute?: Route
     /** 路由列表 */
     private routeList: Record<string, Route> = {}
+    /** 是否发生过 `hashChange` 事件 */
+    public hashChanged: boolean = false
     /**
      * 实例化路由管理模块
      * @param options 配置选项
@@ -116,6 +118,7 @@ class ApeeRouter {
     public start() {
         const _this = this
         const listener = (event?: HashChangeEvent) => {
+            if (event) this.hashChanged = true
             let newUrl = event?.newURL || location.href
             let newHash = new URL(newUrl).hash
             const args = newHash.split('/').slice(2)

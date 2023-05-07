@@ -13,6 +13,8 @@ var ApeeRouter = /** @class */ (function () {
     function ApeeRouter(options) {
         /** 路由列表 */
         this.routeList = {};
+        /** 是否发生过 `hashChange` 事件 */
+        this.hashChanged = false;
         if (options === null || options === void 0 ? void 0 : options.default)
             this.setDefaultRoute(options.default);
         if (options === null || options === void 0 ? void 0 : options.routeSet)
@@ -112,8 +114,11 @@ var ApeeRouter = /** @class */ (function () {
     };
     /** 启动路由系统 */
     ApeeRouter.prototype.start = function () {
+        var _this_1 = this;
         var _this = this;
         var listener = function (event) {
+            if (event)
+                _this_1.hashChanged = true;
             var newUrl = (event === null || event === void 0 ? void 0 : event.newURL) || location.href;
             var newHash = new URL(newUrl).hash;
             var args = newHash.split('/').slice(2);
