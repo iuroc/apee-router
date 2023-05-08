@@ -48,7 +48,7 @@ var ApeeRouter = /** @class */ (function () {
         else if (Array.isArray(_default))
             this.defaultRoute = this.set.apply(this, _default)[0];
         else
-            throw new Error('default 选项只能是 string | string[] 类型');
+            throw new Error('default 选项类型错误');
     };
     /**
      * 设置路由
