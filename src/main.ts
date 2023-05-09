@@ -26,9 +26,7 @@ class ApeeRouter {
                 if (set.length == 2 && typeof set[1] != 'string')
                     this.set(...set as [RouteNameSetOption, RouteEventSetOption])
                 else this.set(set as string[])
-            } else {
-                throw new Error('routeSet 类型错误')
-            }
+            } else throw new Error('routeSet 类型错误')
         })
     }
 
