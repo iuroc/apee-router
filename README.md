@@ -75,7 +75,7 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
 6. 启动路由
 
     ```ts
-    router.show()
+    router.start()
     ```
 7. 设置 CSS
 
