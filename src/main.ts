@@ -167,7 +167,7 @@ type RouteEventSetOption = RouteEvent | RouteEvent[]
 /** 路由设置选项 */
 type RouteSetOption = RouteNameSetOption | [RouteNameSetOption, RouteEventSetOption]
 /** 路由事件 */
-export type RouteEvent = (route: Route, router?: ApeeRouter) => void
+export type RouteEvent = (route: Route, router: ApeeRouter) => void
 
 /** 路由对象 */
 export type Route = {
