@@ -1,11 +1,11 @@
 {
   "name": "apee-router",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "原生 JS 实现的路由管理系统",
   "main": "js/main.js",
   "types": "src/main.ts",
   "scripts": {
-    "build": "node build.js"
+    "build": "tsc && node build.js && uglifyjs dist/apee-router.js -mc -o dist/apee-router.min.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/oyps/apee-router/issues"
   },
-  "homepage": "https://github.com/oyps/apee-router#readme"
+  "homepage": "https://github.com/oyps/apee-router#readme",
+  "dependencies": {
+    "typescript": "^5.0.4",
+    "uglify-js": "^3.17.4"
+  }
 }

@@ -26,7 +26,9 @@ class ApeeRouter {
                 if (set.length == 2 && typeof set[1] != 'string')
                     this.set(...set as [RouteNameSetOption, RouteEventSetOption])
                 else this.set(set as string[])
-            } else throw new Error('routeSet 类型错误')
+            } else {
+                throw new Error('routeSet 类型错误')
+            }
         })
     }
 
@@ -110,7 +112,7 @@ class ApeeRouter {
         })
         this.getRouteDom(route.name).style.display = 'block'
         route.args = args
-        route.event.forEach(event => event(route))
+        route.event.forEach(event => event(route, this))
     }
     /** 启动路由系统 */
     public start() {
@@ -165,7 +167,7 @@ type RouteEventSetOption = RouteEvent | RouteEvent[]
 /** 路由设置选项 */
 type RouteSetOption = RouteNameSetOption | [RouteNameSetOption, RouteEventSetOption]
 /** 路由事件 */
-export type RouteEvent = (route: Route) => void
+export type RouteEvent = (route: Route, router?: ApeeRouter) => void
 
 /** 路由对象 */
 export type Route = {

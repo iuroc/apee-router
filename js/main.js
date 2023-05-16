@@ -105,12 +105,13 @@ var ApeeRouter = /** @class */ (function () {
      * @param args 路由参数
      */
     ApeeRouter.prototype.loadRoute = function (route, args) {
+        var _this_1 = this;
         this.getRouteDom(route.name, true).forEach(function (dom) {
             dom.style.display = 'none';
         });
         this.getRouteDom(route.name).style.display = 'block';
         route.args = args;
-        route.event.forEach(function (event) { return event(route); });
+        route.event.forEach(function (event) { return event(route, _this_1); });
     };
     /** 启动路由系统 */
     ApeeRouter.prototype.start = function () {
