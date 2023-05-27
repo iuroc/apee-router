@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Router = void 0;
 /**
  * APEE 路由管理模块
  * @author 欧阳鹏
@@ -155,4 +156,5 @@ var ApeeRouter = /** @class */ (function () {
     };
     return ApeeRouter;
 }());
+exports.Router = ApeeRouter;
 exports.default = ApeeRouter;
