@@ -1,14 +1,14 @@
 /**
  * APEE 路由管理模块
  * @author 欧阳鹏
- * @version 1.1.16
+ * @version 1.1.17
  * @link https://github.com/oyps/apee-router
  */
 class ApeeRouter {
     /** 默认路由 */
-    private defaultRoute?: Route
+    public defaultRoute?: Route
     /** 路由列表 */
-    private routeList: Record<string, Route> = {}
+    public routeList: Record<string, Route> = {}
     /** 是否发生过 `hashChange` 事件 */
     public hashChanged: boolean = false
     /**
@@ -107,7 +107,7 @@ class ApeeRouter {
      * @param route 路由对象
      * @param args 路由参数
      */
-    public loadRoute(route: Route, args: string[]) {
+    public loadRoute(route: Route, args: string[] = []) {
         this.getRouteDom(route.name, true).forEach(dom => {
             dom.style.display = 'none'
         })
