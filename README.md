@@ -158,7 +158,7 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
      * @param route 路由对象
      * @param args 路由参数
      */
-    public loadRoute(route: Route, args: string[]): void
+    public loadRoute(route: Route, args: string[] = []): void
     ```
 
 - `start` 方法
