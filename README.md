@@ -28,9 +28,9 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
 
     ```ts
     // TypeScript
-    import ApeeRouter from 'apee-router'
+    import { Router } from 'apee-router'
     // JavaScript
-    const ApeeRouter = require('apee-router').default
+    const { Router } = require("apee-router")
     ```
 
 3. 创建 ApeeRouter 对象
@@ -38,7 +38,7 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
     使用 `new`  关键字，创建一个对象。
 
     ```ts
-    const router = new ApeeRouter()
+    const router = new Router()
     ```
 
 4. 设置路由
@@ -46,7 +46,7 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
     - 通过 `ApeeRouter` 类的构造函数设置路由
 
         ```ts
-        new ApeeRouter({
+        new Router({
             /** 可选，默认路由 */
             default: 'home',
             /** 可选，注册路由列表 */
@@ -58,7 +58,7 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
     - 通过 `set` 方法设置路由
 
         ```ts
-        const router = new ApeeRouter()
+        const router = new Router()
         const routeEvent = (route) => {
             console.log(route.name)
         }
