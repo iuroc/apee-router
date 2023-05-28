@@ -108,22 +108,22 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
 
         ```ts
         import { RouteEvent } from 'apee-router'
-
+        
         export const login: RouteEvent = (route, router) => {
             const data = route.data
             const routeList = router.routeList
         }
         ```
     - index.ts
-
+        
         ```ts
-	import { Router } from 'apee-router'
-	import { login } from './route/login'
+        import { login } from './route/login'
+        
+        const router = new Router()
+        router.set('login', login)
+        router.start()
+        ```
 
-	const router = new Router()
-	router.set('login', login)
-	router.start()
-	```
 ## API 文档
 
 - `constructor` 方法
