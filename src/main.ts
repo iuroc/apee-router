@@ -1,7 +1,7 @@
 /**
  * APEE 路由管理模块
  * @author 欧阳鹏
- * @version 1.1.17
+ * @version 1.1.18
  * @link https://github.com/oyps/apee-router
  */
 class ApeeRouter {
@@ -132,6 +132,14 @@ class ApeeRouter {
         if (!this.defaultRoute) this.setDefaultRoute('home')
         window.addEventListener('hashchange', listener)
         listener()
+    }
+    /**
+     * 获取当前路由名称
+     * @returns 当前路由名称
+     * @since 1.1.18
+     */
+    public getNowRouteName() {
+        return location.hash == '' ? (this.defaultRoute as Route).name : location.hash.split('/')[1]
     }
     /** 工具类 */
     public static util = {
