@@ -1,7 +1,7 @@
 /**
  * APEE 路由管理模块
  * @author 欧阳鹏
- * @version 1.1.18
+ * @version 1.1.19
  * @link https://github.com/oyps/apee-router
  */
 class ApeeRouter {
