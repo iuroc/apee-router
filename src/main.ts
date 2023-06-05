@@ -1,7 +1,7 @@
 /**
  * APEE 路由管理模块
  * @author 欧阳鹏
- * @version 1.2.0
+ * @version 1.2.1
  * @link https://github.com/oyps/apee-router
  */
 class ApeeRouter {
@@ -190,7 +190,7 @@ export type Route = {
     event: RouteEvent[],
     /** 路由目标 DOM */
     dom: HTMLElement,
-    /** 路由参数 */
+    /** 路由参数（不包括路由名称） */
     args: string[]
 }
 
