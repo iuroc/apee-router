@@ -1,7 +1,7 @@
 /**
  * APEE 路由管理模块
  * @author 欧阳鹏
- * @version 1.2.1
+ * @version 1.2.2
  * @link https://github.com/oyps/apee-router
  */
 class ApeeRouter {
@@ -161,7 +161,7 @@ class ApeeRouter {
 /** 初始化选项 */
 type InitOption = {
     /** 默认路由设置选项 */
-    default?: DefaultRouteOption,
+    default?: DefaultRouteOption
     /** 路由注册选项 */
     routeSet?: RouteSetOption[]
 }
@@ -183,13 +183,13 @@ export type Route = {
     /** 路由名称 */
     name: string
     /** 路由数据存储区 */
-    data: Record<string, any>,
+    data: Record<string, any>
     /** 路由就绪状态 */
-    status: number,
+    status: number
     /** 路由事件列表 */
-    event: RouteEvent[],
+    event: RouteEvent[]
     /** 路由目标 DOM */
-    dom: HTMLElement,
+    dom: HTMLElement
     /** 路由参数（不包括路由名称） */
     args: string[]
 }
