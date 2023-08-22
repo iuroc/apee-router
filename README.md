@@ -62,8 +62,8 @@ Apee-Router 是一个简单且轻量级的 JavaScript 路由库，允许开发�
         const routeEvent = (route, router) => {
             console.log('每次切换到该页都会执行')
             if (route.status == 1) return
-            route.status = 1
             console.log('只在第一次切换到该页执行')
+            return route.status = 1
         }
 
         // 单个路由 + 单个路由事件
